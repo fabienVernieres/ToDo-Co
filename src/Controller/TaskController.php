@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
+use DateTime;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +31,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $task->setCreatedAt(new \DateTimeImmutable());
             $taskRepository->save($task, true);
 
             return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
@@ -69,7 +72,7 @@ class TaskController extends AbstractController
     #[Route('/{id}', name: 'app_task_delete', methods: ['POST'])]
     public function delete(Request $request, Task $task, TaskRepository $taskRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$task->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $task->getId(), $request->request->get('_token'))) {
             $taskRepository->remove($task, true);
         }
 
