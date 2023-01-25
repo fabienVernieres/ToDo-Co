@@ -1,19 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Task index{% endblock %}
+{% block title %}Liste des tâches{% endblock %}
 
 {% block body %}
-    <h1>Task index</h1>
+    <h1>Liste des tâches</h1>
 
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>CreatedAt</th>
-                <th>Title</th>
-                <th>Content</th>
-                <th>IsDone</th>
-                <th>actions</th>
+                <th>Créée le</th>
+                <th>Titre</th>
+                <th>Contenu</th>
+                <th>Accomplie</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -23,19 +23,19 @@
                 <td>{{ task.createdAt ? task.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ task.title }}</td>
                 <td>{{ task.content }}</td>
-                <td>{{ task.isDone ? 'Yes' : 'No' }}</td>
+                <td>{{ task.isDone ? 'Oui' : 'Non' }}</td>
                 <td>
-                    <a href="{{ path('app_task_show', {'id': task.id}) }}">show</a>
-                    <a href="{{ path('app_task_edit', {'id': task.id}) }}">edit</a>
+                    <a href="{{ path('app_task_show', {'id': task.id}) }}">voir</a>
+                    <a href="{{ path('app_task_edit', {'id': task.id}) }}">modifier</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="6">Aucune tâche actiellement</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_task_new') }}">Create new</a>
+    <a href="{{ path('app_task_new') }}">Ajouter une tâche</a>
 {% endblock %}
