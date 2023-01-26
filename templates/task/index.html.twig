@@ -12,6 +12,7 @@
                 <th>Créée le</th>
                 <th>Titre</th>
                 <th>Contenu</th>
+                <th>Utilisateur</th>
                 <th>Accomplie</th>
                 <th>Actions</th>
             </tr>
@@ -23,6 +24,7 @@
                 <td>{{ task.createdAt ? task.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ task.title }}</td>
                 <td>{{ task.content }}</td>
+                <td>{{ task.user.username }}</td>
                 <td>{{ task.isDone ? 'Oui' : 'Non' }}</td>
                 <td>
                     <a href="{{ path('app_task_show', {'id': task.id}) }}">voir</a>
