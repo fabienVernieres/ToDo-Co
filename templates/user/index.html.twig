@@ -11,8 +11,6 @@
                 <th>Id</th>
                 <th>Nom d'utilisateur</th>
                 <th>Rôles</th>
-                <th>Mot de passe</th>
-                <th>Compte vérifié</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -21,9 +19,13 @@
             <tr>
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.password }}</td>
-                <td>{{ user.isVerified ? 'Oui' : 'Non' }}</td>
+                <td>
+                    {% if 'ROLE_ADMIN' in user.roles %}
+                        admin
+                    {% else %}
+                        utilisateur
+                    {% endif %}
+                </td>
                 <td>
                     <a href="{{ path('app_user_show', {'id': user.id}) }}">voir</a>
                     <a href="{{ path('app_user_edit', {'id': user.id}) }}">modifier</a>
