@@ -37,15 +37,16 @@
         <!-- Page Content -->
         <div class="container">
             <div class="row">
-                {% if not app.user %}
-                <a href="{{ path('app_user_new') }}" class="btn btn-primary">Créer un utilisateur</a>
-                {% endif %}
                 {% if app.user %}
-                <a href="{{ path('app_logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
+                    {% if 'ROLE_ADMIN' in app.user.roles %}
+                        <a href="{{ path('app_user_new') }}" class="btn btn-primary">Créer un utilisateur</a>
+                    {% endif %}
+                    
+                    <a href="{{ path('app_logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
                 {% endif %}
 
                 {% if not app.user and 'login' != app.request.attributes.get('_route') %}
-                <a href="{{ path('app_login') }}" class="btn btn-success">Se connecter</a>
+                    <a href="{{ path('app_login') }}" class="btn btn-success">Se connecter</a>
                 {% endif %}
             </div>
 
