@@ -11,7 +11,7 @@
                 <th>Id</th>
                 <th>Nom d'utilisateur</th>
                 <th>Rôles</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -27,7 +27,6 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}">voir</a>
                     <a href="{{ path('app_user_edit', {'id': user.id}) }}">modifier</a>
                 </td>
             </tr>
@@ -39,5 +38,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_user_new') }}">Ajouter un utilisateur</a>
 {% endblock %}
