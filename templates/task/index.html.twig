@@ -25,9 +25,14 @@
                 <td>{{ task.title }}</td>
                 <td>{{ task.content }}</td>
                 <td>{{ task.user.username }}</td>
-                <td>{{ task.isDone ? 'Oui' : 'Non' }}</td>
                 <td>
-                    <a href="{{ path('app_task_show', {'id': task.id}) }}">voir</a>
+                    <form action="{{ path('app_task_toggle', {'id' : task.id }) }}">
+                        <button class="btn btn-success btn-sm pull-right">
+                            {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
+                        </button>
+                    </form>
+                </td>
+                <td>
                     <a href="{{ path('app_task_edit', {'id': task.id}) }}">modifier</a>
                 </td>
             </tr>

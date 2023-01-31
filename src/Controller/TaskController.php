@@ -15,6 +15,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class TaskController extends AbstractController
 {
     #[Route('/', name: 'app_task_index', methods: ['GET'])]
+    /**
+     * Affiche la liste des tâches de l'utilisateur
+     *
+     * @param  mixed $taskRepository
+     * @param  mixed $userRepository
+     * @return Response
+     */
     public function index(TaskRepository $taskRepository, UserRepository $userRepository): Response
     {
         // Obtenir toutes les tâches liées à l'utilisateur
@@ -36,6 +43,13 @@ class TaskController extends AbstractController
     }
 
     #[Route('/new', name: 'app_task_new', methods: ['GET', 'POST'])]
+    /**
+     * Ajouter une tâche
+     *
+     * @param  Request $request
+     * @param  TaskRepository $taskRepository
+     * @return Response
+     */
     public function new(Request $request, TaskRepository $taskRepository): Response
     {
         $task = new Task();
@@ -53,23 +67,21 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('task/new.html.twig', [
+        return $this->render('task/new.html.twig', [
             'task' => $task,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_task_show', methods: ['GET'])]
-    public function show(Task $task): Response
-    {
-        // Vérifie si l'utilisateur à les droits pour voir la tâche
-        $this->denyAccessUnlessGranted('POST_VIEW', $task);
-        return $this->render('task/show.html.twig', [
-            'task' => $task,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_task_edit', methods: ['GET', 'POST'])]
+    /**
+     * Modifie une tâche
+     *
+     * @param  Request $request
+     * @param  Task $task
+     * @param  TaskRepository $taskRepository
+     * @return Response
+     */
     public function edit(Request $request, Task $task, TaskRepository $taskRepository): Response
     {
         // Vérifie si l'utilisateur à les droits pour modifier la tâche
@@ -84,13 +96,21 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('task/edit.html.twig', [
+        return $this->render('task/edit.html.twig', [
             'task' => $task,
             'form' => $form,
         ]);
     }
 
     #[Route('/{id}', name: 'app_task_delete', methods: ['POST'])]
+    /**
+     * Supprime une tâche
+     *
+     * @param  Request $request
+     * @param  Task $task
+     * @param  TaskRepository $taskRepository
+     * @return Response
+     */
     public function delete(Request $request, Task $task, TaskRepository $taskRepository): Response
     {
         // Vérifie si l'utilisateur à les droits pour supprimer la tâche
@@ -101,5 +121,23 @@ class TaskController extends AbstractController
         }
 
         return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/toggle', name: 'app_task_toggle', methods: ['GET'])]
+    /**
+     * Modifie l'état d'une tâche
+     *
+     * @param  Task $task
+     * @param  TaskRepository $taskRepository
+     * @return Response
+     */
+    public function toggle(Task $task, TaskRepository $taskRepository): Response
+    {
+        $task->setIsDone(!$task->isIsDone());
+        $taskRepository->save($task, true);
+
+        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+
+        return $this->redirectToRoute('app_task_index');
     }
 }

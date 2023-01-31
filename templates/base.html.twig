@@ -37,11 +37,13 @@
         <!-- Page Content -->
         <div class="container">
             <div class="row">
-                {% if app.user %}
-                    {% if 'ROLE_ADMIN' in app.user.roles %}
-                        <a href="{{ path('app_user_new') }}" class="btn btn-primary">Créer un utilisateur</a>
-                    {% endif %}
-                    
+                {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+                    <a href="{{ path('app_user_index') }}" class="btn btn-primary">Gestion des utilisateurs</a>
+                {% endif %}
+
+                {% if not app.user %}
+                    <a href="{{ path('app_user_new') }}" class="btn btn-primary">Créer un utilisateur</a>
+                {% else %}                    
                     <a href="{{ path('app_logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
                 {% endif %}
 
