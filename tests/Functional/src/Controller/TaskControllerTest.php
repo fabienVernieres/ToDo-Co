@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class TaskControllerTest extends WebTestCase
 {
     /**
-     * Test l'affiche de la liste des tâches par un utilisateur connecté
+     * Test l'affichage de la liste des tâches par un utilisateur connecté
      *
      * @return void
      */
@@ -21,20 +21,20 @@ class TaskControllerTest extends WebTestCase
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
 
-        // Recherche l'utilisateur admin
+        // Recherche l'utilisateur admin.
         $testUser = $userRepository->findOneBy(['username' => 'admin']);
 
-        // Simule $testUser est connecté
+        // Simule $testUser est connecté.
         $client->loginUser($testUser);
 
-        // Test l'accès à la liste des tâches
+        // Test l'accès à la liste des tâches.
         $client->request('GET', '/task/');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Liste des tâches');
     }
 
     /**
-     * Test l''accès à la page d'ajout d'une tâche'
+     * Test l'accès à la page d'ajout d'une tâche
      *
      * @return void
      */
@@ -43,13 +43,13 @@ class TaskControllerTest extends WebTestCase
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
 
-        // Recherche l'utilisateur admin
+        // Recherche l'utilisateur admin.
         $testUser = $userRepository->findOneBy(['username' => 'admin']);
 
-        // Simule $testUser est connecté
+        // Simule $testUser est connecté.
         $client->loginUser($testUser);
 
-        // Test l'accès au formulaire d'ajout de tâche
+        // Test l'accès au formulaire d'ajout de tâche.
         $client->request('GET', '/task/new');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Créer une nouvelle tâche');
@@ -65,32 +65,32 @@ class TaskControllerTest extends WebTestCase
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
 
-        // Recherche l'utilisateur admin
+        // Recherche l'utilisateur admin.
         $testUser = $userRepository->findOneBy(['username' => 'admin']);
 
-        // Simule $testUser est connecté
+        // Simule $testUser est connecté.
         $client->loginUser($testUser);
 
         $crawler = $client->request('GET', '/task/new');
 
-        // Sélectionne le bouton du formulaire
+        // Sélectionne le bouton du formulaire.
         $buttonCrawlerNode = $crawler->selectButton('Valider');
 
-        // Récupére l'objet Form du formulaire appartenant à ce bouton
+        // Récupére l'objet Form du formulaire appartenant à ce bouton.
         $form = $buttonCrawlerNode->form();
 
-        // Récupère le token du formulaire
-        $token = $form->get('task[_token]')->getValue();
+        // Récupère le token du formulaire.
+        $token = (string)$form->get('task[_token]')->getValue();
 
-        // On définit les valeurs saisies dans le formulaire
+        // On définit les valeurs saisies dans le formulaire.
         $form['task[title]'] = 'Test titre';
         $form['task[content]'] = 'Test contenu';
         $form['task[_token]'] = $token;
 
-        // On soumet le formulaire
+        // On soumet le formulaire.
         $client->submit($form);
 
-        // On attend une redirection vers la page des tâches
+        // On attend une redirection vers la page des tâches.
         $this->assertResponseRedirects('/task/');
     }
 
@@ -105,36 +105,36 @@ class TaskControllerTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
         $taskRepository = static::getContainer()->get(TaskRepository::class);
 
-        // Recherche l'utilisateur admin
+        // Recherche l'utilisateur admin.
         $testUser = $userRepository->findOneBy(['username' => 'admin']);
 
-        // Simule $testUser est connecté
+        // Simule $testUser est connecté.
         $client->loginUser($testUser);
 
-        // Recherche une tâche
+        // Recherche une tâche.
         $task = $taskRepository->findOneBy([], ['id' => 'desc']);
         $testURI = '/task/' . $task->getId() . '/edit';
 
         $crawler = $client->request('GET', $testURI);
 
-        // Sélectionne le bouton du formulaire
+        // Sélectionne le bouton du formulaire.
         $buttonCrawlerNode = $crawler->selectButton('Modifier');
 
-        // Récupére l'objet Form du formulaire appartenant à ce bouton
+        // Récupére l'objet Form du formulaire appartenant à ce bouton.
         $form = $buttonCrawlerNode->form();
 
-        // Récupère le token du formulaire
-        $token = $form->get('task[_token]')->getValue();
+        // Récupère le token du formulaire.
+        $token = (string)$form->get('task[_token]')->getValue();
 
-        // On définit les valeurs saisies dans le formulaire
+        // On définit les valeurs saisies dans le formulaire.
         $form['task[title]'] = 'autre titre';
         $form['task[content]'] = 'autre contenu';
         $form['task[_token]'] = $token;
 
-        // On soumet le formulaire
+        // On soumet le formulaire.
         $client->submit($form);
 
-        // On attend une redirection vers la page des tâches
+        // On attend une redirection vers la page des tâches.
         $this->assertResponseRedirects('/task/');
     }
 }

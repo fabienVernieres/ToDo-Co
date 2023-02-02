@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class SecurityControllerTest extends WebTestCase
 {
     /**
-     * Test l'accés à la page de login
+     * Test l'accès à la page de login
      *
      * @return void
      */
@@ -25,7 +25,7 @@ class SecurityControllerTest extends WebTestCase
     }
 
     /**
-     * Test une tentative de connexion avec un mauvais mot de passe
+     * Test une tentative de connexion avec de mauvais identifiants
      *
      * @return void
      */
@@ -34,20 +34,20 @@ class SecurityControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
 
-        // Sélectionne le bouton du formulaire
+        // Sélectionne le bouton du formulaire.
         $buttonCrawlerNode = $crawler->selectButton('S\'identifier');
 
-        // Récupére l'objet Form du formulaire appartenant à ce bouton
+        // Récupére l'objet Form du formulaire appartenant à ce bouton.
         $form = $buttonCrawlerNode->form();
 
-        // On définit les valeurs saisies dans le formulaire
+        // On définit les valeurs saisies dans le formulaire.
         $form['username'] = 'inconnu';
         $form['password'] = '123';
 
-        // On soumet le formulaire
+        // On soumet le formulaire.
         $client->submit($form);
 
-        // On attend une redirection vers la page de login
+        // On attend une redirection vers la page de login.
         $this->assertResponseRedirects('/login');
     }
 
@@ -61,20 +61,20 @@ class SecurityControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
 
-        // Sélectionne le bouton du formulaire
+        // Sélectionne le bouton du formulaire.
         $buttonCrawlerNode = $crawler->selectButton('S\'identifier');
 
-        // Récupére l'objet Form du formulaire appartenant à ce bouton
+        // Récupére l'objet Form du formulaire appartenant à ce bouton.
         $form = $buttonCrawlerNode->form();
 
-        // On définit les valeurs saisies dans le formulaire
+        // On définit les valeurs saisies dans le formulaire.
         $form['username'] = 'admin';
         $form['password'] = 'mauvaismotdepasse';
 
-        // On soumet le formulaire
+        // On soumet le formulaire.
         $client->submit($form);
 
-        // On attend une redirection vers la page de login
+        // On attend une redirection vers la page de login.
         $this->assertResponseRedirects('/login');
     }
 
@@ -88,20 +88,20 @@ class SecurityControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
 
-        // Sélectionne le bouton du formulaire
+        // Sélectionne le bouton du formulaire.
         $buttonCrawlerNode = $crawler->selectButton('S\'identifier');
 
-        // Récupére l'objet Form du formulaire appartenant à ce bouton
+        // Récupére l'objet Form du formulaire appartenant à ce bouton.
         $form = $buttonCrawlerNode->form();
 
-        // On définit les valeurs saisies dans le formulaire
+        // On définit les valeurs saisies dans le formulaire.
         $form['username'] = 'admin';
         $form['password'] = '123456';
 
-        // On soumet le formulaire
+        // On soumet le formulaire.
         $client->submit($form);
 
-        // On attend une redirection vers la page d'accueil
+        // On attend une redirection vers la page d'accueil.
         $this->assertResponseRedirects('/');
     }
 
@@ -115,15 +115,15 @@ class SecurityControllerTest extends WebTestCase
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
 
-        // Recherche l'utilisateur admin
+        // Recherche l'utilisateur admin.
         $testUser = $userRepository->findOneBy(['username' => 'admin']);
 
-        // Simule $testUser est connecté
+        // Simule $testUser est connecté.
         $client->loginUser($testUser);
 
         $crawler = $client->request('GET', '/login');
 
-        // On attend une redirection vers la page d'accueil
+        // On attend une redirection vers la page d'accueil.
         $this->assertResponseRedirects('/');
     }
 }

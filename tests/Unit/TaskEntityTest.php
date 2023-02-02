@@ -4,7 +4,7 @@ namespace App\tests\Unit;
 
 use App\Entity\Task;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -42,7 +42,7 @@ class TaskEntityTest extends KernelTestCase
             ->setTitle(self::VALID_TITLE)
             ->setContent(self::VALID_CONTENT);
 
-        // Aucune erreur attendue
+        // Aucune erreur attendue.
         $this->getValidationErrors($task, 0);
     }
 
@@ -55,7 +55,7 @@ class TaskEntityTest extends KernelTestCase
     {
         $task = new Task();
 
-        // 2 erreurs attendues
+        // 2 erreurs attendues.
         $this->getValidationErrors($task, 2);
     }
 
@@ -65,9 +65,9 @@ class TaskEntityTest extends KernelTestCase
      *
      * @param  Task $task
      * @param  int $numberExpectedErrors
-     * @return ConstraintViolationList
+     * @return ConstraintViolationListInterface
      */
-    private function getValidationErrors(Task $task, int $numberExpectedErrors): ConstraintViolationList
+    private function getValidationErrors(Task $task, int $numberExpectedErrors): ConstraintViolationListInterface
     {
         $errors = $this->validator->validate($task);
 

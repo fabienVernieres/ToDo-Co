@@ -4,7 +4,7 @@ namespace App\tests\Unit;
 
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -44,7 +44,7 @@ class UserEntityTest extends KernelTestCase
             ->setUsername(self::VALID_USERNAME)
             ->setEmail(self::VALID_EMAIL);
 
-        // 0 erreur attendue
+        // 0 erreur attendue.
         $this->getValidationErrors($user, 0);
     }
 
@@ -61,7 +61,7 @@ class UserEntityTest extends KernelTestCase
             ->setUsername(self::RESERVED_USERNAME)
             ->setEmail(self::NO_VALID_EMAIL);
 
-        // 2 erreurs attendues
+        // 2 erreurs attendues.
         $this->getValidationErrors($user, 2);
     }
 
@@ -71,9 +71,9 @@ class UserEntityTest extends KernelTestCase
      *
      * @param  User $user
      * @param  int $numberExpectedErrors
-     * @return ConstraintViolationList
+     * @return ConstraintViolationListInterface
      */
-    private function getValidationErrors(User $user, int $numberExpectedErrors): ConstraintViolationList
+    private function getValidationErrors(User $user, int $numberExpectedErrors): ConstraintViolationListInterface
     {
         $errors = $this->validator->validate($user);
 
