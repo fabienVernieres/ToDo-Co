@@ -4,45 +4,44 @@
 
 {% block body %}
     <h1>Liste des tâches</h1>
+   
+   <div>
+     <a href="{{ path('app_task_new') }}" class="btn btn-info pull-right">Créer une tâche</a>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Créée le</th>
-                <th>Titre</th>
-                <th>Contenu</th>
-                <th>Utilisateur</th>
-                <th>Accomplie</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="row">
         {% for task in tasks %}
-            <tr>
-                <td>{{ task.id }}</td>
-                <td>{{ task.createdAt ? task.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ task.title }}</td>
-                <td>{{ task.content }}</td>
-                <td>{{ task.user.username }}</td>
-                <td>
+        <div class="col-sm-4 col-lg-4 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h4 class="pull-right">
+                        {% if task.isDone %}
+                            <span class="glyphicon glyphicon-ok"></span>
+                        {% else %}             
+                            <form method="post" action="{{ path('app_task_delete', {'id' : task.id }) }}">
+                                <button class="btn btn-danger btn-sm pull-right">X</button>
+                            </form>
+                        {% endif %}
+                    </h4>
+                    <h4><a href="{{ path('app_task_edit', {'id' : task.id }) }}">{{ task.title }}</a></h4>
+                    <p>{{ task.content }}</p>
+                </div>
+                <div>
                     <form action="{{ path('app_task_toggle', {'id' : task.id }) }}">
                         <button class="btn btn-success btn-sm pull-right">
                             {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
                         </button>
                     </form>
-                </td>
-                <td>
-                    <a href="{{ path('app_task_edit', {'id': task.id}) }}">modifier</a>
-                </td>
-            </tr>
+                    <form method="post" action="{{ path('app_task_delete', {'id' : task.id }) }}">
+                        <button class="btn btn-danger btn-sm pull-right">Supprimer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
         {% else %}
-            <tr>
-                <td colspan="6">Aucune tâche actiellement</td>
-            </tr>
+            <div class="alert alert-warning" role="alert">
+                Il n'y a pas encore de tâche enregistrée. <a href="{{ path('app_task_new') }}" class="btn btn-warning pull-right">Créer une tâche</a>
+            </div>
         {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_task_new') }}">Ajouter une tâche</a>
+    </div>
 {% endblock %}

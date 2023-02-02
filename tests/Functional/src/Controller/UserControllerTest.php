@@ -20,20 +20,20 @@ class UserControllerTest extends WebTestCase
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
 
-        // Recherche l'utilisateur admin
+        // Recherche l'utilisateur admin.
         $testUser = $userRepository->findOneBy(['username' => 'admin']);
 
-        // Simule $testUser est connecté
+        // Simule $testUser est connecté.
         $client->loginUser($testUser);
 
-        // Test l'accès à la page des utilisateurs
+        // Test l'accès à la page des utilisateurs.
         $client->request('GET', '/user/');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Utilisateurs');
     }
 
     /**
-     * Test l'ajout d'un utilisateur par admin
+     * Test l'ajout d'un utilisateur
      *
      * @return void
      */
@@ -42,34 +42,28 @@ class UserControllerTest extends WebTestCase
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
 
-        // Recherche l'utilisateur admin
-        $testUser = $userRepository->findOneBy(['username' => 'admin']);
-
-        // Simule $testUser est connecté
-        $client->loginUser($testUser);
-
         $crawler = $client->request('GET', '/user/new');
 
-        // Sélectionne le bouton du formulaire
+        // Sélectionne le bouton du formulaire.
         $buttonCrawlerNode = $crawler->selectButton('Envoyer');
 
-        // Récupére l'objet Form du formulaire appartenant à ce bouton
+        // Récupére l'objet Form du formulaire appartenant à ce bouton.
         $form = $buttonCrawlerNode->form();
 
-        // Récupère le token du formulaire
-        $token = $form->get('user[_token]')->getValue();
+        // Récupère le token du formulaire.
+        $token = (string)$form->get('user[_token]')->getValue();
 
-        // On définit les valeurs saisies dans le formulaire
+        // On définit les valeurs saisies dans le formulaire.
         $form['user[username]'] = 'John';
         $form['user[password][first]'] = '123456';
         $form['user[password][second]'] = '123456';
         $form['user[email]'] = 'john@doe.fr';
         $form['user[_token]'] = $token;
 
-        // On soumet le formulaire
+        // On soumet le formulaire.
         $client->submit($form);
 
-        // On attend une redirection vers la page des utilisateurs
+        // On attend une redirection vers la page de connexion.
         $this->assertResponseRedirects('/login');
     }
 
@@ -83,36 +77,36 @@ class UserControllerTest extends WebTestCase
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
 
-        // Recherche l'utilisateur admin
+        // Recherche l'utilisateur admin.
         $testUser = $userRepository->findOneBy(['username' => 'admin']);
 
-        // Recherche l'utilisateur à modifier
+        // Recherche l'utilisateur à modifier.
         $testUserToEdit = $userRepository->findOneBy(['username' => 'anonyme']);
 
-        // URI pour l'édition de l'utilisateur $testUserToEdit
+        // URI pour l'édition de l'utilisateur $testUserToEdit.
         $testUri = '/user/' . $testUserToEdit->getId() . '/edit';
 
-        // Simule admin est connecté
+        // Simule admin est connecté.
         $client->loginUser($testUser);
 
         $crawler = $client->request('GET', $testUri);
 
-        // Sélectionne le bouton du formulaire
+        // Sélectionne le bouton du formulaire.
         $buttonCrawlerNode = $crawler->selectButton('Modifier');
 
-        // Récupére l'objet Form du formulaire appartenant à ce bouton
+        // Récupére l'objet Form du formulaire appartenant à ce bouton.
         $form = $buttonCrawlerNode->form();
 
-        // Récupère le token du formulaire
-        $token = $form->get('admin[_token]')->getValue();
+        // Récupère le token du formulaire.
+        $token = (string)$form->get('admin[_token]')->getValue();
 
-        // On définit les valeurs saisies dans le formulaire
+        // On définit les valeurs saisies dans le formulaire.
         $form['admin[_token]'] = $token;
 
-        // On soumet le formulaire
+        // On soumet le formulaire.
         $client->submit($form);
 
-        // On attend une redirection vers la page des utilisateurs
+        // On attend une redirection vers la page des utilisateurs.
         $this->assertResponseRedirects('/user/');
     }
 }

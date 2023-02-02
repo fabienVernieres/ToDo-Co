@@ -18,8 +18,8 @@ class TaskController extends AbstractController
     /**
      * Affiche la liste des tâches de l'utilisateur
      *
-     * @param  mixed $taskRepository
-     * @param  mixed $userRepository
+     * @param  TaskRepository $taskRepository
+     * @param  UserRepository $userRepository
      * @return Response
      */
     public function index(TaskRepository $taskRepository, UserRepository $userRepository): Response
@@ -58,7 +58,7 @@ class TaskController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Ajout de l'utilisateur lié à la tâche
+            // Ajout de l'utilisateur lié à la tâche.
             $task->setUser($this->getUser());
 
             $task->setCreatedAt(new \DateTimeImmutable());
@@ -84,7 +84,7 @@ class TaskController extends AbstractController
      */
     public function edit(Request $request, Task $task, TaskRepository $taskRepository): Response
     {
-        // Vérifie si l'utilisateur à les droits pour modifier la tâche
+        // Vérifie si l'utilisateur à les droits pour modifier la tâche.
         $this->denyAccessUnlessGranted('POST_EDIT', $task);
 
         $form = $this->createForm(TaskType::class, $task);
@@ -113,12 +113,10 @@ class TaskController extends AbstractController
      */
     public function delete(Request $request, Task $task, TaskRepository $taskRepository): Response
     {
-        // Vérifie si l'utilisateur à les droits pour supprimer la tâche
+        // Vérifie si l'utilisateur à les droits pour supprimer la tâche.
         $this->denyAccessUnlessGranted('POST_DELETE', $task);
 
-        if ($this->isCsrfTokenValid('delete' . $task->getId(), $request->request->get('_token'))) {
-            $taskRepository->remove($task, true);
-        }
+        $taskRepository->remove($task, true);
 
         return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
     }

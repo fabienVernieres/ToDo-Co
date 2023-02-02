@@ -50,7 +50,7 @@ class AppFixtures extends Fixture
             $task = new Task();
             $task->setCreatedAt(new \DateTimeImmutable());
             $task->setTitle($faker->sentence($faker->numberBetween(3, 5)));
-            $task->setContent($faker->paragraphs($faker->numberBetween(1, 3), true));
+            $task->setContent($faker->paragraph($faker->numberBetween(1, 3)));
             // Utilisateur admin ou anonyme
             $task->setUser($this->userRepository->find($this->getReference('user' . $faker->numberBetween(1, 2))));
             $manager->persist($task);
