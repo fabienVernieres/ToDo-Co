@@ -2,7 +2,9 @@
 
 Connectez-vous à votre comte [Github](https://github.com/) puis rendez-vous sur le repository du projet: [ToDo-Co](https://github.com/fabienVernieres/ToDo-Co)
 
-Faîtes un Fork du projet, cela va cloner le repository sur votre compte Github. Récupérez l'adresse du dépôt (ex: https://github.com/votrecompte/ToDo-Co.git).
+Faîtes un Fork du projet, cela va cloner le repository sur votre compte Github.
+
+Récupérez l'adresse du dépôt (ex: https://github.com/votrecompte/ToDo-Co.git).
 
 En local, rendez-vous dans votre dossier de travail et faîtes un `git clone https://github.com/votrecompte/ToDo-Co.git`
 
