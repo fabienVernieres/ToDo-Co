@@ -1,46 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des tâches{% endblock %}
+{% block title %}Liste des tâches {{ title }}s{% endblock %}
 
 {% block body %}
-    <h1>Liste des tâches</h1>
-   
-   <div>
-     <a href="{{ path('app_task_new') }}" class="btn btn-info pull-right">Créer une tâche</a>
-    </div>
+    <h1>Liste des tâches {{ title }}s</h1>
 
-    <div class="row">
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
         {% for task in tasks %}
-        <div class="col-sm-4 col-lg-4 col-md-4">
-            <div class="thumbnail">
-                <div class="caption">
-                    <h4 class="pull-right">
+        <div class="col">
+            <div class="card h-100 p-2">
+                <div class="row">
+                    <div class="col d-flex align-items-end flex-column">
                         {% if task.isDone %}
-                            <span class="glyphicon glyphicon-ok"></span>
-                        {% else %}             
-                            <form method="post" action="{{ path('app_task_delete', {'id' : task.id }) }}">
-                                <button class="btn btn-danger btn-sm pull-right">X</button>
-                            </form>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        {% else %}
+                            <a class="link-secondary" href="{{ path('app_task_delete', {'id' : task.id }) }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                            </a>
                         {% endif %}
-                    </h4>
+                    </div>
+                </div>
+
+                <div class="card-body p-2">
                     <h4><a href="{{ path('app_task_edit', {'id' : task.id }) }}">{{ task.title }}</a></h4>
                     <p>{{ task.content }}</p>
                 </div>
-                <div>
-                    <form action="{{ path('app_task_toggle', {'id' : task.id }) }}">
-                        <button class="btn btn-success btn-sm pull-right">
-                            {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
-                        </button>
-                    </form>
-                    <form method="post" action="{{ path('app_task_delete', {'id' : task.id }) }}">
-                        <button class="btn btn-danger btn-sm pull-right">Supprimer</button>
-                    </form>
+
+                <div class="card-footer p-2">
+                    <div class="row row-cols-1 row-cols-md-2 g-2">
+                        <div class="col">
+                           <form action="{{ path('app_task_toggle', {'id' : task.id }) }}">
+                                <button class="btn btn-success btn-sm pull-right">
+                                    {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col d-flex align-items-end flex-column">
+                        <form method="post" action="{{ path('app_task_delete', {'id' : task.id }) }}">
+                            <button class="btn btn-danger btn-sm pull-right">Supprimer</button>
+                        </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         {% else %}
-            <div class="alert alert-warning" role="alert">
-                Il n'y a pas encore de tâche enregistrée. <a href="{{ path('app_task_new') }}" class="btn btn-warning pull-right">Créer une tâche</a>
+            <div class="alert alert-warning mt-3" role="alert">
+                Il n'y a pas encore de tâche {{ title }}.
             </div>
         {% endfor %}
     </div>

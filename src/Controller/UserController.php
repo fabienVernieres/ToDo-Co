@@ -3,18 +3,30 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\AdminType;
 use App\Form\UserType;
+use App\Form\AdminType;
 use App\Repository\UserRepository;
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('/user')]
 class UserController extends AbstractController
 {
+    private FilesystemAdapter $cache;
+    private string $cacheName;
+
+    public function __construct(Security $security)
+    {
+        $this->cache = new FilesystemAdapter();
+        $this->cacheName = ('users' . $security->getUser()->getId());
+    }
+
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     /**
      * Affiche la liste des utilisateurs
@@ -24,8 +36,16 @@ class UserController extends AbstractController
      */
     public function index(UserRepository $userRepository): Response
     {
+        // Mise en cache de la liste des utilisateurs.
+        $users = $this->cache->get($this->cacheName, function (ItemInterface $item) use ($userRepository) {
+            $item->expiresAfter(3600);
+            $users = $userRepository->findAll();
+
+            return $users;
+        });
+
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $users
         ]);
     }
 
@@ -45,6 +65,10 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Suppression du cache.
+            $this->cache->deleteItem($this->cacheName);
+
             $user->setPassword(
                 $passwordHasher->hashPassword(
                     $user,
@@ -79,6 +103,10 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Suppression du cache.
+            $this->cache->deleteItem($this->cacheName);
+
             $userRepository->save($user, true);
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);

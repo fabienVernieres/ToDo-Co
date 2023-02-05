@@ -60,4 +60,4 @@ En bref:
 
 - Commentez vos classes, méthodes et tout ce qui peut aider à mieux comprendre votre code.
 
-- Typer vos variables, paramètres et retours de méthodes.
+- Typez vos variables, paramètres et retours de méthodes.

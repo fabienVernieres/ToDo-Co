@@ -11,10 +11,6 @@
             {{ encore_entry_link_tags('app') }}
         <!-- Bootstrap Core CSS -->
         <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-
-        <!-- Custom CSS -->
-        <link href="{{ asset('css/shop-homepage.css') }}" rel="stylesheet">
-
         {% endblock %}
 
         {% block javascripts %}
@@ -35,53 +31,57 @@
         </nav>
 
         <!-- Page Content -->
-        <div class="container">
-            <div class="row">
+        <div class="container mt-3">
+            <div class="row mb-3">
                 {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
-                    <a href="{{ path('app_user_index') }}" class="btn btn-primary">Gestion des utilisateurs</a>
+                    <div class="col">
+                        <a href="{{ path('app_user_index') }}" class="btn btn-primary">Gestion des utilisateurs</a>
+                    </div>
                 {% endif %}
 
                 {% if not app.user %}
-                    <a href="{{ path('app_user_new') }}" class="btn btn-primary">Créer un utilisateur</a>
-                {% else %}                    
-                    <a href="{{ path('app_logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
+                    <div class="col">
+                        <a href="{{ path('app_user_new') }}" class="btn btn-primary">Créer un utilisateur</a>
+                    </div>
+                {% else %}
+                    <div class="col d-flex align-items-end flex-column">                
+                        <a href="{{ path('app_logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
+                    </div>
                 {% endif %}
 
                 {% if not app.user and 'login' != app.request.attributes.get('_route') %}
-                    <a href="{{ path('app_login') }}" class="btn btn-success">Se connecter</a>
+                    <div class="col d-flex align-items-end flex-column">
+                        <a href="{{ path('app_login') }}" class="btn btn-success">Se connecter</a>
+                    </div>
                 {% endif %}
             </div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    {% for flash_message in app.session.flashBag.get('success') %}
-                        <div class="alert alert-success" role="alert">
-                            <strong>Superbe !</strong> {{ flash_message }}
-                        </div>
-                    {% endfor %}
+            {% for flash_message in app.session.flashBag.get('success') %}
+                <div class="alert alert-success" role="alert">
+                    <strong>Superbe !</strong> {{ flash_message }}
+                </div>
+            {% endfor %}
 
-                    {% for flash_message in app.session.flashBag.get('error') %}
-                        <div class="alert alert-danger" role="alert">
-                            <strong>Oops !</strong> {{ flash_message }}
-                        </div>
-                    {% endfor %}
+            {% for flash_message in app.session.flashBag.get('error') %}
+                <div class="alert alert-danger" role="alert">
+                    <strong>Oops !</strong> {{ flash_message }}
+                </div>
+            {% endfor %}
 
-                    {% block header_title %}{% endblock %}
-                    {% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_homepage.jpg') }}" alt="todo list">{% endblock %}
+            {% block body %}{% endblock %}
+
+            <div class="row mt-5">
+                <div class="col d-flex align-items-start flex-column">
+                    <a href="{{ path('app_task_new') }}" class="btn btn-light">Créer une nouvelle tâche</a>
+                </div>
+                    <div class="col d-flex align-items-center flex-column">
+                    <a href="{{ path('app_task_index') }}" class="btn btn-light">Consulter la liste des tâches à faire</a>
+                </div>
+                <div class="col d-flex align-items-end flex-column">
+                    <a href="{{ path('app_task_index' , {isdone: 1}) }}" class="btn btn-light">Consulter la liste des tâches terminées</a>
                 </div>
             </div>
 
-            <br />
-
-            <div class="row">
-                <div class="col-md-12">
-                    {% block body %}{% endblock %}
-                </div>
-            </div>
-        </div>
-        <!-- /.container -->
-
-        <div class="container">
 
             <hr>
             <footer>
