@@ -26,8 +26,8 @@ class Task
     #[Assert\NotBlank(message: 'Vous devez saisir du contenu.')]
     private ?string $content = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?bool $isDone = null;
+    #[ORM\Column]
+    private ?int $isDone = 0;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
