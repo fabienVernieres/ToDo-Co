@@ -44,11 +44,14 @@ class AppFixtures extends Fixture
 
         $manager->flush();
 
+        $createdAt = new \DateTimeImmutable();
+
         // Ajout de 10 tâches
         $faker = Factory::create();
         for ($i = 0; $i < 10; $i++) {
             $task = new Task();
-            $task->setCreatedAt(new \DateTimeImmutable());
+            $task->setCreatedAt($createdAt);
+            $task->setDeadline($createdAt->add(new \DateInterval('P' . $faker->numberBetween(1, 30) . 'D')));
             $task->setTitle($faker->sentence($faker->numberBetween(3, 5)));
             $task->setContent($faker->paragraph($faker->numberBetween(1, 3)));
             // Utilisateur admin ou anonyme

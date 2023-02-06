@@ -55,4 +55,21 @@ class TaskRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    // /**
+    //  * @return Task[] Returns an array of Task objects
+    //  */
+    // public function findExpired(): array
+    // {
+    //     $date = new \DateTimeImmutable();
+    //     return $this->createQueryBuilder('t')
+    //         ->where('t.deadline < :date')
+    //         ->andWhere('t.isDone = :isDone')
+    //         ->setParameters([
+    //             'date' => $date,
+    //             'isDone' => 0
+    //         ])
+    //         ->getQuery()
+    //         ->getResult();
+    // }
 }
