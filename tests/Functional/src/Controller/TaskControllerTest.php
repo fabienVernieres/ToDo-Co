@@ -30,7 +30,7 @@ class TaskControllerTest extends WebTestCase
         // Test l'accès à la liste des tâches.
         $client->request('GET', '/task/');
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Liste des tâches');
+        $this->assertSelectorTextContains('h1', 'Liste des tâches programmées');
     }
 
     /**
@@ -85,6 +85,9 @@ class TaskControllerTest extends WebTestCase
         // On définit les valeurs saisies dans le formulaire.
         $form['task[title]'] = 'Test titre';
         $form['task[content]'] = 'Test contenu';
+        $form['task[deadline][day]'] = '1';
+        $form['task[deadline][month]'] = '1';
+        $form['task[deadline][year]'] = '2023';
         $form['task[_token]'] = $token;
 
         // On soumet le formulaire.
@@ -129,6 +132,9 @@ class TaskControllerTest extends WebTestCase
         // On définit les valeurs saisies dans le formulaire.
         $form['task[title]'] = 'autre titre';
         $form['task[content]'] = 'autre contenu';
+        $form['task[deadline][day]'] = '1';
+        $form['task[deadline][month]'] = '1';
+        $form['task[deadline][year]'] = '2023';
         $form['task[_token]'] = $token;
 
         // On soumet le formulaire.

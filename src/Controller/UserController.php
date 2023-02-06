@@ -24,7 +24,7 @@ class UserController extends AbstractController
     public function __construct(Security $security)
     {
         $this->cache = new FilesystemAdapter();
-        $this->cacheName = ('users' . $security->getUser()->getId());
+        $this->cacheName = $security->getUser() ? ('users' . $security->getUser()->getId()) : 'users';
     }
 
     #[Route('/', name: 'app_user_index', methods: ['GET'])]

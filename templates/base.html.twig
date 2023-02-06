@@ -45,7 +45,7 @@
                     </div>
                 {% else %}
                     <div class="col d-flex align-items-end flex-column">                
-                        <a href="{{ path('app_logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
+                        <a href="{{ path('app_logout') }}" class="btn btn-danger">Se déconnecter</a>
                     </div>
                 {% endif %}
 
@@ -72,10 +72,10 @@
 
             <div class="row mt-5">
                 <div class="col d-flex align-items-start flex-column">
-                    <a href="{{ path('app_task_new') }}" class="btn btn-light">Créer une nouvelle tâche</a>
+                    <a href="{{ path('app_task_new') }}" class="btn btn-outline-success">Créer une nouvelle tâche</a>
                 </div>
                     <div class="col d-flex align-items-center flex-column">
-                    <a href="{{ path('app_task_index') }}" class="btn btn-light">Consulter la liste des tâches à faire</a>
+                    <a href="{{ path('app_task_index') }}" class="btn btn btn-outline-info">Consulter la liste des tâches à faire</a>
                 </div>
                 <div class="col d-flex align-items-end flex-column">
                     <a href="{{ path('app_task_index' , {isdone: 1}) }}" class="btn btn-light">Consulter la liste des tâches terminées</a>

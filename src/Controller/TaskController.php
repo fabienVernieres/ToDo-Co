@@ -64,7 +64,8 @@ class TaskController extends AbstractController
 
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
-            'title' => $title
+            'title' => $title,
+            'date' => new \DateTimeImmutable()
         ]);
     }
 
@@ -93,6 +94,8 @@ class TaskController extends AbstractController
 
             $task->setCreatedAt(new \DateTimeImmutable());
             $taskRepository->save($task, true);
+
+            $this->addFlash('success', sprintf('La tâche %s a bien été ajoutée.', $task->getTitle()));
 
             return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -129,6 +132,8 @@ class TaskController extends AbstractController
             // Mis à jour de la tâche.
             $taskRepository->save($task, true);
 
+            $this->addFlash('success', sprintf('La tâche %s a bien été modifiée.', $task->getTitle()));
+
             return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -138,7 +143,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_task_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_task_delete', methods: ['GET'])]
     /**
      * Supprime une tâche
      *
@@ -158,6 +163,7 @@ class TaskController extends AbstractController
 
         // Suppression de la tâche.
         $taskRepository->remove($task, true);
+        $this->addFlash('success', sprintf('La tâche %s a bien été supprimée.', $task->getTitle()));
 
         return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
     }

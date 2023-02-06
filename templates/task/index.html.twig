@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col d-flex align-items-end flex-column">
                         {% if task.isDone %}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down text-success" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
                             </svg>
                         {% else %}
@@ -26,23 +26,36 @@
                 </div>
 
                 <div class="card-body p-2">
-                    <h4><a href="{{ path('app_task_edit', {'id' : task.id }) }}">{{ task.title }}</a></h4>
+                    <h5>
+                        <a href="{{ path('app_task_edit', {'id' : task.id }) }}">{{ task.title }}</a>
+                    </h5>
+                    
                     <p>{{ task.content }}</p>
+
+                    <p class="text-center">
+                        {% if task.isDone == 0 %}
+                            {% if task.deadline < date %}
+                                <small class="text-danger fw-bold">{{ 'Expirée'|upper }}</small>
+                            {% else %}
+                                <small class="text-muted fw-bold">A faire avant {{ task.deadline|date('d/m/Y') }}</small>
+                            {% endif %}
+                        {% else %}
+                            <small class="text-danger fw-bold">{{ 'Validée'|upper }}</small>
+                        {% endif %}
+                    </p>
                 </div>
 
                 <div class="card-footer p-2">
                     <div class="row row-cols-1 row-cols-md-2 g-2">
                         <div class="col">
-                           <form action="{{ path('app_task_toggle', {'id' : task.id }) }}">
-                                <button class="btn btn-success btn-sm pull-right">
-                                    {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
-                                </button>
-                            </form>
+                           <a href ="{{ path('app_task_toggle', {'id' : task.id }) }}" class="btn btn-success btn-sm">
+                                {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
+                            </a>
                         </div>
                         <div class="col d-flex align-items-end flex-column">
-                        <form method="post" action="{{ path('app_task_delete', {'id' : task.id }) }}">
-                            <button class="btn btn-danger btn-sm pull-right">Supprimer</button>
-                        </form>
+                            <a href="{{ path('app_task_delete', {'id' : task.id }) }}" class="btn btn-danger btn-sm pull-right">
+                                Supprimer
+                            </a>
                         </div>
                     </div>
                 </div>
