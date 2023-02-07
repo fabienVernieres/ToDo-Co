@@ -17,7 +17,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/task')]
 class TaskController extends AbstractController
 {
+    /**
+     * Cache du FileSystem.
+     * @var FileSystemAdapter
+     */
     private FilesystemAdapter $cache;
+
     /**
      * Nom de fichier cache.
      * @var string
@@ -50,7 +55,7 @@ class TaskController extends AbstractController
                 $item->expiresAfter(3600);
                 $tasks = $taskRepository->findByUser($this->getUser(), $isdone);
 
-                /** 
+                /**
                  * Si l'utilisateur a le rôle ROLE_ADMIN, lui permettre de gérer
                  * les tâches liées à l'utilisateur "anonyme".
                  */
@@ -193,9 +198,9 @@ class TaskController extends AbstractController
         if ($task->isIsDone()) {
             $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
             return $this->redirectToRoute('app_task_index');
-        } else {
-            $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme à faire.', $task->getTitle()));
-            return $this->redirectToRoute('app_task_index', ['isdone' => 1]);
         }
+
+        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme à faire.', $task->getTitle()));
+        return $this->redirectToRoute('app_task_index', ['isdone' => 1]);
     }
 }

@@ -15,11 +15,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity(fields: ['username'], message: 'Il y a déjà un utilisateur avec ce nom.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    /**
+     * ID de l'utilisateur.
+     * @var int
+     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    /**
+     * Nom de l'utilisateur.
+     * @var string
+     */
     #[ORM\Column(length: 25, unique: true)]
     #[Assert\NotBlank(message: 'Vous devez saisir un nom d\'utilisateur.')]
     private ?string $username = null;
@@ -36,6 +44,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 64)]
     private ?string $password = null;
 
+    /**
+     * Email de l'utilisateur.
+     * @var string
+     */
     #[ORM\Column(length: 60, unique: true)]
     #[Assert\NotBlank(message: 'Vous devez saisir une adresse email.')]
     #[Assert\Email(message: 'Le format de l\'adresse n\'est pas correcte.')]

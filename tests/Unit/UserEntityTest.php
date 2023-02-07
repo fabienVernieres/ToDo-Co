@@ -16,6 +16,10 @@ class UserEntityTest extends KernelTestCase
     private const RESERVED_USERNAME = "admin";
     private const VALID_EMAIL = "name@domain.com";
     private const NO_VALID_EMAIL = "namedomainecom";
+    /**
+     * Validateur de Symfony.
+     * @var ValidatorInterface
+     */
     public ValidatorInterface $validator;
 
     /**
