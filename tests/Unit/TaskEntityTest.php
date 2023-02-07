@@ -14,6 +14,10 @@ class TaskEntityTest extends KernelTestCase
 {
     private const VALID_TITLE = "Exemple titre";
     private const VALID_CONTENT = "Exemple de contenu";
+    /**
+     * Validateur de Symfony.
+     * @var ValidatorInterface
+     */
     public ValidatorInterface $validator;
 
     /**

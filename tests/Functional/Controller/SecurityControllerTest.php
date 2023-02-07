@@ -18,7 +18,7 @@ class SecurityControllerTest extends WebTestCase
     public function testLoginPage(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $client->request('GET', '/login');
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Veuillez vous connecter');
@@ -121,7 +121,7 @@ class SecurityControllerTest extends WebTestCase
         // Simule $testUser est connecté.
         $client->loginUser($testUser);
 
-        $crawler = $client->request('GET', '/login');
+        $client->request('GET', '/login');
 
         // On attend une redirection vers la page d'accueil.
         $this->assertResponseRedirects('/');

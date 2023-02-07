@@ -19,6 +19,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class UserController extends AbstractController
 {
     private FilesystemAdapter $cache;
+    /**
+     * Nom du fichier cache.
+     * @var string
+     */
     private string $cacheName;
 
     public function __construct(Security $security)
