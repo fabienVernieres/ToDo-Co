@@ -18,14 +18,26 @@ class Task
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    /**
+     * Titre de la tâche.
+     * @var string
+     */
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Vous devez saisir un titre.')]
     private ?string $title = null;
 
+    /**
+     * Contenu de la tâche.
+     * @var string
+     */
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message: 'Vous devez saisir du contenu.')]
     private ?string $content = null;
 
+    /**
+     * Status de la tâche (non faîte: 0, faîte: 1).
+     * @var int
+     */
     #[ORM\Column]
     private ?int $isDone = 0;
 

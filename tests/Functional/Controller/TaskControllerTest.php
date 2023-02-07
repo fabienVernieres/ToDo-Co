@@ -80,7 +80,7 @@ class TaskControllerTest extends WebTestCase
         $form = $buttonCrawlerNode->form();
 
         // Récupère le token du formulaire.
-        $token = (string)$form->get('task[_token]')->getValue();
+        $token = (string) $form->get('task[_token]')->getValue();
 
         // On définit les valeurs saisies dans le formulaire.
         $form['task[title]'] = 'Test titre';
@@ -127,7 +127,7 @@ class TaskControllerTest extends WebTestCase
         $form = $buttonCrawlerNode->form();
 
         // Récupère le token du formulaire.
-        $token = (string)$form->get('task[_token]')->getValue();
+        $token = (string) $form->get('task[_token]')->getValue();
 
         // On définit les valeurs saisies dans le formulaire.
         $form['task[title]'] = 'autre titre';

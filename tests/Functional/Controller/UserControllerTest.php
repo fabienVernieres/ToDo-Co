@@ -40,7 +40,6 @@ class UserControllerTest extends WebTestCase
     public function testNew(): void
     {
         $client = static::createClient();
-        $userRepository = static::getContainer()->get(UserRepository::class);
 
         $crawler = $client->request('GET', '/user/new');
 
@@ -51,7 +50,7 @@ class UserControllerTest extends WebTestCase
         $form = $buttonCrawlerNode->form();
 
         // Récupère le token du formulaire.
-        $token = (string)$form->get('user[_token]')->getValue();
+        $token = (string) $form->get('user[_token]')->getValue();
 
         // On définit les valeurs saisies dans le formulaire.
         $form['user[username]'] = 'John';
@@ -98,7 +97,7 @@ class UserControllerTest extends WebTestCase
         $form = $buttonCrawlerNode->form();
 
         // Récupère le token du formulaire.
-        $token = (string)$form->get('admin[_token]')->getValue();
+        $token = (string) $form->get('admin[_token]')->getValue();
 
         // On définit les valeurs saisies dans le formulaire.
         $form['admin[_token]'] = $token;

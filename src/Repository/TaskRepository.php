@@ -52,6 +52,7 @@ class TaskRepository extends ServiceEntityRepository
                 'user' => $user,
                 'isdone' => $isdone
             ])
+            ->orderBy('t.deadline', 'ASC')
             ->getQuery()
             ->getResult();
     }

@@ -18,6 +18,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class TaskController extends AbstractController
 {
     private FilesystemAdapter $cache;
+    /**
+     * Nom de fichier cache.
+     * @var string
+     */
     private string $cacheName;
 
     public function __construct(Security $security)
@@ -46,10 +50,10 @@ class TaskController extends AbstractController
                 $item->expiresAfter(3600);
                 $tasks = $taskRepository->findByUser($this->getUser(), $isdone);
 
-                // /** 
-                //  * Si l'utilisateur a le rôle ROLE_ADMIN, lui permettre de gérer
-                //  * les tâches liées à l'utilisateur "anonyme".
-                //  */
+                /** 
+                 * Si l'utilisateur a le rôle ROLE_ADMIN, lui permettre de gérer
+                 * les tâches liées à l'utilisateur "anonyme".
+                 */
                 if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
                     $tasksAnonymous = $taskRepository->findByUser(
                         $userRepository->findOneBy(['username' => 'anonyme']),
@@ -65,7 +69,7 @@ class TaskController extends AbstractController
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
             'title' => $title,
-            'date' => new \DateTimeImmutable()
+            'date'  => new \DateTimeImmutable()
         ]);
     }
 
