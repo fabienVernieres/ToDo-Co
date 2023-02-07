@@ -63,7 +63,7 @@ class UserControllerTest extends WebTestCase
         $client->submit($form);
 
         // On attend une redirection vers la page de connexion.
-        $this->assertResponseRedirects('/login');
+        $this->assertResponseRedirects('/task/');
     }
 
     /**

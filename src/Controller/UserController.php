@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Form\AdminType;
 use App\Repository\UserRepository;
+use App\Security\AppCustomAuthenticator;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[Route('/user')]
 class UserController extends AbstractController
 {
+    /**
+     * Cache du FileSystem.
+     * @var FileSystemAdapter
+     */
     private FilesystemAdapter $cache;
+
     /**
      * Nom du fichier cache.
      * @var string
@@ -60,9 +66,10 @@ class UserController extends AbstractController
      * @param  Request $request
      * @param  UserRepository $userRepository
      * @param  UserPasswordHasherInterface $passwordHasher
+     * @param  Security $security
      * @return Response
      */
-    public function new(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): Response
+    public function new(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher, Security $security): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -82,7 +89,8 @@ class UserController extends AbstractController
             $this->addFlash('success', "L'utilisateur a bien été ajouté.");
             $userRepository->save($user, true);
 
-            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
+            $security->login($user, AppCustomAuthenticator::class);
+            return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user/new.html.twig', [

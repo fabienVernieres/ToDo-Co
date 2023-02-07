@@ -10,11 +10,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
 {
+    /**
+     * ID de la tâche.
+     * @var int
+     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    /**
+     * Date de création de la tâche.
+     * @var DateTimeImmutable
+     */
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 

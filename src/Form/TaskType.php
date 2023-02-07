@@ -19,7 +19,7 @@ class TaskType extends AbstractType
             ->add('content', TextareaType::class)
             ->add('deadline', DateType::class, [
                 'input' => 'datetime_immutable',
-                'years' => range(date('Y'), date('Y') + 5),
+                'years' => range(date('Y'), (date('Y') + 5)),
                 'placeholder' => [
                     'year' => 'Année', 'month' => 'Mois', 'day' => 'Jour',
                 ],

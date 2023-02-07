@@ -12,7 +12,16 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    /**
+     * Interface du hasher de mot de passe.
+     * @var UserPasswordHasherInterface
+     */
     private UserPasswordHasherInterface $hasher;
+
+    /**
+     * Référentiel de l'entité User.
+     * @var UserRepository
+     */
     private UserRepository $userRepository;
 
     public function __construct(UserPasswordHasherInterface $hasher, UserRepository $userRepository)
