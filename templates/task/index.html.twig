@@ -35,7 +35,7 @@
                     <p class="text-center">
                         {% if task.isDone == 0 %}
                             {% if task.deadline < date %}
-                                <small class="text-danger fw-bold">{{ 'Expirée'|upper }}</small>
+                                <small class="text-danger fw-bold">{{ 'Expirée'|upper }} le {{ task.deadline|date('d/m/Y') }}</small>
                             {% else %}
                                 <small class="text-muted fw-bold">A faire avant {{ task.deadline|date('d/m/Y') }}</small>
                             {% endif %}

@@ -21,7 +21,7 @@ class Task
 
     /**
      * Date de création de la tâche.
-     * @var DateTimeImmutable
+     * @var \DateTimeImmutable|null
      */
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -49,10 +49,18 @@ class Task
     #[ORM\Column]
     private ?int $isDone = 0;
 
+    /**
+     * Utilisateur lié à la tâche.
+     * @var User
+     */
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    /**
+     * Date d'expiration de la tâche.
+     * @var \DateTimeImmutable|null
+     */
     #[ORM\Column]
     private ?\DateTimeImmutable $deadline = null;
 
@@ -97,12 +105,12 @@ class Task
         return $this;
     }
 
-    public function isIsDone(): ?bool
+    public function isIsDone(): ?int
     {
         return $this->isDone;
     }
 
-    public function setIsDone(?bool $isDone): self
+    public function setIsDone(?int $isDone): self
     {
         $this->isDone = $isDone;
 
