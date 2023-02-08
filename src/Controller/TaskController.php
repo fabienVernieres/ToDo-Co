@@ -55,7 +55,7 @@ class TaskController extends AbstractController
                 $item->expiresAfter(3600);
                 $tasks = $taskRepository->findByUser($this->getUser(), $isdone);
 
-                /**
+                /*
                  * Si l'utilisateur a le rôle ROLE_ADMIN, lui permettre de gérer
                  * les tâches liées à l'utilisateur "anonyme".
                  */
@@ -69,7 +69,6 @@ class TaskController extends AbstractController
                 return $tasks;
             }
         );
-
 
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
