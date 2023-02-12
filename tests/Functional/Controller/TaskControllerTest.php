@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class TaskControllerTest extends WebTestCase
 {
     /**
-     * Test l'affichage de la liste des tâches par un utilisateur connecté
+     * Test l'affichage de la liste des tâches par un utilisateur connecté.
      *
      * @return void
      */
@@ -34,7 +34,7 @@ class TaskControllerTest extends WebTestCase
     }
 
     /**
-     * Test l'accès à la page d'ajout d'une tâche
+     * Test l'accès à la page d'ajout d'une tâche.
      *
      * @return void
      */
@@ -56,7 +56,7 @@ class TaskControllerTest extends WebTestCase
     }
 
     /**
-     * Test l'ajout d'une tâche par admin
+     * Test l'ajout d'une tâche par admin.
      *
      * @return void
      */
@@ -98,7 +98,7 @@ class TaskControllerTest extends WebTestCase
     }
 
     /**
-     * Test l'édition d'une tâche par admin
+     * Test l'édition d'une tâche par admin.
      *
      * @return void
      */
@@ -142,5 +142,101 @@ class TaskControllerTest extends WebTestCase
 
         // On attend une redirection vers la page des tâches.
         $this->assertResponseRedirects('/task/');
+    }
+
+    /**
+     * Test la suppression d'une tâche.
+     *
+     * @return void
+     */
+    public function testDelete(): void
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $taskRepository = static::getContainer()->get(TaskRepository::class);
+
+        // Recherche des utilisateurs.
+        $admin = $userRepository->findOneBy(['username' => 'admin']);
+
+        // Recherche une tâche de l'utilisateur admin.
+        $task = $taskRepository->findOneBy(['user' => $admin], ['id' => 'desc']);
+
+        // Url de suppression.
+        $url = '/task/' . $task->getId() . '/delete';
+
+        // Simule anonyme est connecté.
+        $client->loginUser($admin);
+
+        // Test la suppression de la tâche par anonyme.
+        $client->request('GET', $url);
+
+        $this->assertResponseRedirects('/task/');
+    }
+
+    /**
+     * Test la suppression d'une tâche non autorisée.
+     *
+     * @return void
+     */
+    public function testDeleteUnauthorized(): void
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $taskRepository = static::getContainer()->get(TaskRepository::class);
+
+        // Recherche des utilisateurs.
+        $admin = $userRepository->findOneBy(['username' => 'admin']);
+        $anonyme = $userRepository->findOneBy(['username' => 'anonyme']);
+
+        // Recherche une tâche de l'utilisateur admin.
+        $task = $taskRepository->findOneBy(['user' => $admin], ['id' => 'desc']);
+
+        // Url de suppression.
+        $url = '/task/' . $task->getId() . '/delete';
+
+        // Simule anonyme est connecté.
+        $client->loginUser($anonyme);
+
+        // Test la suppression de la tâche par anonyme.
+        $client->request('GET', $url);
+
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    /**
+     * Marquer une tâche comme faite.
+     *
+     * @return void
+     */
+    public function testSetIsDone(): void
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $taskRepository = static::getContainer()->get(TaskRepository::class);
+
+        // Recherche des utilisateurs.
+        $admin = $userRepository->findOneBy(['username' => 'admin']);
+
+        // Recherche une tâche de l'utilisateur admin.
+        $task = $taskRepository->findOneBy(['user' => $admin, 'isDone' => 0], ['id' => 'desc']);
+
+        // Url de suppression.
+        $url = '/task/' . $task->getId() . '/toggle';
+
+        // Simule anonyme est connecté.
+        $client->loginUser($admin);
+
+        // Test la suppression de la tâche par anonyme.
+        $client->request('GET', $url);
+
+        // On contrôle que la tâche est bien validée.
+        $this->assertEquals($task->isIsDone(), 1);
+
+        // On attend une redirection vers l'index des tâches.
+        $this->assertResponseRedirects('/task/');
+
+        // Vérifie la présence d'un message de confirmation.
+        $crawler = $client->followRedirect();
+        $this->assertSelectorExists('.alert-success');
     }
 }

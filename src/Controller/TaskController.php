@@ -151,7 +151,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_task_delete', methods: ['GET'])]
+    #[Route('/{id}/delete', name: 'app_task_delete', methods: ['GET'])]
     /**
      * Supprime une tâche
      *
@@ -200,6 +200,6 @@ class TaskController extends AbstractController
         }
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme à faire.', $task->getTitle()));
-        return $this->redirectToRoute('app_task_index', ['isdone' => 1]);
+        return $this->redirectToRoute('app_task_index');
     }
 }

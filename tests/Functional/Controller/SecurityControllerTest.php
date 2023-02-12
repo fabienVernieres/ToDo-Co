@@ -102,7 +102,7 @@ class SecurityControllerTest extends WebTestCase
         $client->submit($form);
 
         // On attend une redirection vers la page d'accueil.
-        $this->assertResponseRedirects('/');
+        $this->assertResponseRedirects('/task/');
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\tests\Unit;
+namespace App\tests\Unit\Entity;
 
 use App\Entity\Task;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

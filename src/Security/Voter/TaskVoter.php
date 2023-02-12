@@ -26,7 +26,7 @@ class TaskVoter extends Voter
             return false;
         }
 
-        /* 
+        /*
          * Si l'utilisateur a le rôle ROLE_ADMIN, il peut voir, éditer ou
          * supprimer la tâche liée à l'utilisateur "anonyme".
          */
