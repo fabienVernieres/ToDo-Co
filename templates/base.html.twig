@@ -31,17 +31,16 @@
         <!-- Page Content -->
         <div class="container mt-3">
             <div class="row mb-3">
-                {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
-                    <div class="col">
-                        <a href="{{ path('app_user_index') }}" class="btn btn-primary">Gestion des utilisateurs</a>
-                    </div>
-                {% endif %}
-
-                {% if not app.user %}
-                    <div class="col">
-                        <a href="{{ path('app_user_new') }}" class="btn btn-primary">Créer un utilisateur</a>
-                    </div>
-                {% else %}
+                {% if app.user %}
+                    {% if 'ROLE_ADMIN' in app.user.roles %}
+                        <div class="col d-flex align-items-start flex-column">
+                            <a href="{{ path('app_user_new') }}" class="btn btn-primary">Créer un utilisateur</a>
+                        </div>
+                        <div class="col d-flex align-items-center flex-column">
+                            <a href="{{ path('app_user_index') }}" class="btn btn-info">Gestion des utilisateurs</a>
+                        </div>
+                    {% endif %}
+                    
                     <div class="col d-flex align-items-end flex-column">                
                         <a href="{{ path('app_logout') }}" class="btn btn-danger">Se déconnecter</a>
                     </div>
@@ -56,13 +55,13 @@
 
             {% for flash_message in app.session.flashBag.get('success') %}
                 <div class="alert alert-success" role="alert">
-                    <strong>Superbe !</strong> {{ flash_message }}
+                    {{ flash_message }}
                 </div>
             {% endfor %}
 
             {% for flash_message in app.session.flashBag.get('error') %}
                 <div class="alert alert-danger" role="alert">
-                    <strong>Oops !</strong> {{ flash_message }}
+                    {{ flash_message }}
                 </div>
             {% endfor %}
 
@@ -70,10 +69,10 @@
 
             <div class="row mt-5">
                 <div class="col d-flex align-items-start flex-column">
-                    <a href="{{ path('app_task_new') }}" class="btn btn-outline-success">Créer une nouvelle tâche</a>
+                    <a href="{{ path('app_task_new') }}" class="btn btn-success">Créer une nouvelle tâche</a>
                 </div>
                     <div class="col d-flex align-items-center flex-column">
-                    <a href="{{ path('app_task_index') }}" class="btn btn btn-outline-info">Consulter la liste des tâches à faire</a>
+                    <a href="{{ path('app_task_index') }}" class="btn btn btn-info">Consulter la liste des tâches à faire</a>
                 </div>
                 <div class="col d-flex align-items-end flex-column">
                     <a href="{{ path('app_task_index' , {isdone: 1}) }}" class="btn btn-light">Consulter la liste des tâches terminées</a>
