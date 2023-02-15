@@ -8,7 +8,7 @@
     <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
         {% for task in tasks %}
         <div class="col">
-            <div class="card h-100 p-2">
+            <div class="card h-100 p-2 bg-light">
                 <div class="row">
                     <div class="col d-flex align-items-end flex-column">
                         {% if task.isDone %}
@@ -31,6 +31,12 @@
                     </h5>
                     
                     <p>{{ task.content }}</p>
+
+                    {% if task.user.username != app.user.username %}
+                        <p class="text-center small text-secondary">
+                            Utilisateur {{ task.user.username }}
+                        </p>
+                    {% endif %}
 
                     <p class="text-center">
                         {% if task.isDone == 0 %}

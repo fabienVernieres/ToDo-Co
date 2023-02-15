@@ -199,7 +199,7 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('app_task_index');
         }
 
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme à faire.', $task->getTitle()));
+        $this->addFlash('error', sprintf('La tâche %s a bien été marquée comme à faire.', $task->getTitle()));
         return $this->redirectToRoute('app_task_index');
     }
 }

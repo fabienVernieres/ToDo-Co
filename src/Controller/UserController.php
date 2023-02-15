@@ -89,8 +89,7 @@ class UserController extends AbstractController
             $this->addFlash('success', "L'utilisateur a bien été ajouté.");
             $userRepository->save($user, true);
 
-            $security->login($user, AppCustomAuthenticator::class);
-            return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user/new.html.twig', [
@@ -111,13 +110,20 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): Response
     {
-        $form = $this->createForm(AdminType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Suppression du cache.
             $this->cache->deleteItem($this->cacheName);
+
+            $user->setPassword(
+                $passwordHasher->hashPassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
 
             $userRepository->save($user, true);
 

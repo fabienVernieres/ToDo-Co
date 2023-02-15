@@ -10,6 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Nom d'utilisateur</th>
+                <th>Adresse d'utilisateur</th>
                 <th>Rôles</th>
                 <th>Actions</th>
             </tr>
@@ -19,6 +20,7 @@
             <tr>
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
                 <td>
                     {% if 'ROLE_ADMIN' in user.roles %}
                         admin

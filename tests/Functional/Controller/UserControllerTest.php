@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class UserControllerTest extends WebTestCase
 {
     /**
-     * Test l'accès à la liste des utilisateurs
+     * Test l'accès à la liste des utilisateurs.
      *
      * @return void
      */
@@ -33,13 +33,20 @@ class UserControllerTest extends WebTestCase
     }
 
     /**
-     * Test l'ajout d'un utilisateur
+     * Test l'ajout d'un utilisateur par un administrateur.
      *
      * @return void
      */
     public function testNew(): void
     {
         $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+
+        // Recherche l'utilisateur admin.
+        $testUser = $userRepository->findOneBy(['username' => 'admin']);
+
+        // Simule admin est connecté.
+        $client->loginUser($testUser);
 
         $crawler = $client->request('GET', '/user/new');
 
@@ -63,11 +70,11 @@ class UserControllerTest extends WebTestCase
         $client->submit($form);
 
         // On attend une redirection vers la page de connexion.
-        $this->assertResponseRedirects('/task/');
+        $this->assertResponseRedirects('/user/');
     }
 
     /**
-     * Test l'édition d'un utilisateur par admin
+     * Test l'édition d'un utilisateur par admin.
      *
      * @return void
      */
@@ -97,10 +104,12 @@ class UserControllerTest extends WebTestCase
         $form = $buttonCrawlerNode->form();
 
         // Récupère le token du formulaire.
-        $token = (string) $form->get('admin[_token]')->getValue();
+        $token = (string) $form->get('user[_token]')->getValue();
 
         // On définit les valeurs saisies dans le formulaire.
-        $form['admin[_token]'] = $token;
+        $form['user[password][first]'] = '123456';
+        $form['user[password][second]'] = '123456';
+        $form['user[_token]'] = $token;
 
         // On soumet le formulaire.
         $client->submit($form);
