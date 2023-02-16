@@ -5,7 +5,10 @@
 {% block body %}
     <h1>Créer une nouvelle tâche</h1>
 
-    {{ include('task/_form.html.twig') }}
+    <div class="col-12 col-md-8">
+        {{ include('task/_form.html.twig') }}
 
-    <a href="{{ path('app_task_index') }}">Retour à la liste</a>
+        <a href="{{ path('app_task_index') }}">Retour à la liste</a>
+    </div>
+
 {% endblock %}

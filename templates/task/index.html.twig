@@ -44,6 +44,15 @@
                                 <small class="text-danger fw-bold">{{ 'Expirée'|upper }} le {{ task.deadline|date('d/m/Y') }}</small>
                             {% else %}
                                 <small class="text-muted fw-bold">A faire avant {{ task.deadline|date('d/m/Y') }}</small>
+                                <br>
+                                <small>Il vous reste 
+                                    {% set leftDays = date(task.deadline).diff(date(date)) %}
+                                        {% if leftDays.days == 1 %}
+                                            1 jour
+                                        {% else %}
+                                            {{ leftDays.days }} jours
+                                        {% endif %}
+                                </small>
                             {% endif %}
                         {% else %}
                             <small class="text-danger fw-bold">{{ 'Validée'|upper }}</small>

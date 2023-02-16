@@ -43,10 +43,10 @@ class TaskRepository extends ServiceEntityRepository
     /**
      * @return Task[] Returns an array of Task objects
      */
-    public function findByUser(User $user, int $isdone): array
+    public function findByUser(array $user, int $isdone): array
     {
         return $this->createQueryBuilder('t')
-            ->where('t.user = :user')
+            ->where('t.user in (:user)')
             ->andWhere('t.isDone = :isdone')
             ->setParameters([
                 'user' => $user,

@@ -53,19 +53,23 @@ class TaskController extends AbstractController
             $isdone . $this->cacheName,
             function (ItemInterface $item) use ($taskRepository, $isdone, $userRepository) {
                 $item->expiresAfter(3600);
-                $tasks = $taskRepository->findByUser($this->getUser(), $isdone);
+
+                // Tableau des utilisateurs liés à la tâche.
+                $users[] = $this->getUser();
 
                 /*
-                 * Si l'utilisateur a le rôle ROLE_ADMIN, lui permettre de gérer
-                 * les tâches liées à l'utilisateur "anonyme".
+                 * On ajoute l'utilisateur anonyme à la liste des utilisateurs
+                 * si l'utilisateur actuel est un administrateur.
                  */
                 if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
-                    $tasksAnonymous = $taskRepository->findByUser(
-                        $userRepository->findOneBy(['username' => 'anonyme']),
-                        $isdone
-                    );
-                    $tasks = array_merge($tasks, $tasksAnonymous);
+                    $users[] = $userRepository->findOneBy(['username' => 'anonyme']);
                 }
+
+                // On va chercher les tâches.
+                $tasks = $taskRepository->findByUser(
+                    $users,
+                    $isdone
+                );
                 return $tasks;
             }
         );
