@@ -3,18 +3,19 @@
 {% block title %}Connectez-vous!{% endblock %}
 
 {% block body %}
-
     <h1 class="mb-3">Veuillez vous connecter</h1>
+    
+    <div class="col-12 col-md-8">
     <form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
-        </div>
-    {% endif %}
+        {% if app.user %}
+            <div class="mb-3">
+                Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
+            </div>
+        {% endif %}
 
     <div class="form-group">
         <label for="inputUsername">Nom d'utilisateur</label>
@@ -44,5 +45,6 @@
     <button class="btn btn-primary mt-3" type="submit">
         S'identifier
     </button>
-</form>
+    </form>
+</div>
 {% endblock %}

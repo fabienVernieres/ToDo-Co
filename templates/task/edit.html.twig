@@ -5,8 +5,18 @@
 {% block body %}
     <h1>Modifier une tâche</h1>
 
-    {{ include('task/_form.html.twig', {'button_label': 'Modifier'}) }}
+    <div class="col-12 col-md-8">
+        {{ include('task/_form.html.twig', {'button_label': 'Modifier'}) }}
 
-    <a href="{{ path('app_task_index') }}">Retour à la liste</a>
+        {% if task.user != app.user %}
+            <p>
+                Assignée à : <strong>{{ task.user.username }}</strong>
+            </p>
+        {% endif %}
+
+        <p>
+            <a href="{{ path('app_task_index') }}">Retour à la liste</a>
+        </p>
+    </div>
 
 {% endblock %}

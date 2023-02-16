@@ -30,7 +30,7 @@
 
         <!-- Page Content -->
         <div class="container mt-3">
-            <div class="row mb-3">
+            <div class="row mb-3 bg-light py-3">
                 {% if app.user %}
                     {% if 'ROLE_ADMIN' in app.user.roles %}
                         <div class="col d-flex align-items-start flex-column">
@@ -67,7 +67,7 @@
 
             {% block body %}{% endblock %}
 
-            <div class="row mt-5">
+            <div class="row mt-5 bg-light py-3">
                 <div class="col d-flex align-items-start flex-column">
                     <a href="{{ path('app_task_new') }}" class="btn btn-success">Créer une nouvelle tâche</a>
                 </div>
